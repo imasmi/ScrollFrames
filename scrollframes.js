@@ -29,21 +29,6 @@ class Scroll {
         //and start static metrics to
         //be set once at the start of class instance (startMetrics)
         this.getMetrics();
-        
-        
-        /* DEPRECATED BUT MAYBE WILL BE USED AS RETURN VALUES
-        if (this.current == 0) { this.startPosition =  this.item.getBoundingClientRect().top + window.scrollY;}
-        this.finalPosition = false;
-        if ( 'position' in this.from[this.totalObjects - 1] && this.from[this.totalObjects - 1]["position"] == "fixed") {
-            
-            let startOffset = this.item.getBoundingClientRect().top + window.scrollY;
-            if (this.valuesUnits[this.totalObjects - 1]["top"] == "px") {
-                this.finalPosition = this.objects[this.totalObjects - 1].end - startOffset - window.innerHeight + this.toValues[this.totalObjects - 1]["top"];
-            } else {
-                this.finalPosition = this.objects[this.totalObjects - 1].end - startOffset - window.innerHeight + ((window.innerHeight/100) * this.toValues[this.totalObjects - 1]["top"]);
-            }
-        }
-        */
         this.scroll();
         return this;
     }
