@@ -18,7 +18,6 @@ class ScrollFrames {
     framesToObject (frames) {
         let object = {};
         for (let frame in frames) {
-            console.log(frame);
             object[frame] = this.stylesToObject(frames[frame]);
         }
         return object;
@@ -90,7 +89,6 @@ class ScrollFrames {
                         cnt++;
                         return current.toFixed(2);
                     });
-                    console.log(currentValue);
                     this.item.style[key] = currentValue;
                 } else {
                     this.item.style[key] = currentStart[key];
