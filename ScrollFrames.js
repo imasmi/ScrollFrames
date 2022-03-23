@@ -78,7 +78,7 @@ class ScrollFrames {
             let currentStart = this.frames[this.framesKeys[this.index - 1]];
             let currentEnd = this.frames[this.framesKeys[this.index]];
             for (let key in currentStart) {
-                let pattern = /(\d\.\d)|\d+/g;
+                let pattern = /(-?\d\.\d)|-?\d+/g;
                 let isDynamic = key in currentEnd && pattern.test(currentStart[key]);
                 
                 if (isDynamic) {
