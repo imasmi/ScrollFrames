@@ -4,22 +4,34 @@
 <title>Scrollframes crossing</title>
 <script type="text/javascript" src="../ScrollFrames.js"></script>
 <style>
+    ul {list-style-type: none; margin: 0;}
     #container {height: 3000px;}
-    #cross{width: 200px; height: 200px; position: fixed; left: 0; top: 400px; background-color: red; transition: 0.3s;}
+    #scroll-code {position: fixed; top: 20px; left: 20px;}
+    #cross{width: 200px; height: 200px; position: fixed; color: white; display: flex; align-items: center; justify-content: center; left: 0; top: 400px; background-color: red; transition: 0.3s; font-size: 24px;}
 </style>
 </head>
 <body>
 
 <div id="container">
-    <div id="cross"></div>
+    <div id="scroll-code">
+        new ScrollFrames("#cross", {
+            <ul>
+                <li>1000: "left: 0%; opacity: 1; transform: rotate(0deg);",</li>
+                <li>1400: "left: 40%; opacity: 0.7; transform: rotate(360deg);",</li>
+                <li>2000: "left: 60%; opacity: 0.5;",</li>
+                <li>2500: "left: 100%; opacity: 0.3;"</li>
+            </ul>
+        });
+    </div>
+    <div id="cross">#cross</div>
 </div>
 
 <script>
     new ScrollFrames("#cross", {
-        1000: "left: 0%; opacity: 0.3;",
-        1400: "left: 40%; opacity: 0.5;",
-        2000: "left: 60%; opacity: 0.7;",
-        2500: "left: 100%; opacity: 1;"
+        1000: "left: 0%; opacity: 1; transform: rotate(0deg);",
+        1400: "left: 40%; opacity: 0.7; transform: rotate(360deg);",
+        2000: "left: 60%; opacity: 0.5;",
+        2500: "left: 100%; opacity: 0.3;"
     });
 </script>
 </body>
