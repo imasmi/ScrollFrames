@@ -10,8 +10,14 @@ class ScrollFrames {
         this.setFramePosition();
         window.addEventListener("scroll", () => this.setFramePosition());
         window.addEventListener("resize", () => {
-            document.querySelectorAll(".ScrollFrames").forEach(el => el.removeAttribute("style"));
-            this.setFramePosition()
+                new Promise((myResolve, myReject) => {
+                    document.querySelectorAll(".ScrollFrames").forEach(el => el.removeAttribute("style"));
+                    myResolve();
+                    myReject();
+                }).then(
+                (value) => { this.setFramePosition(); },
+                (error) => { alert("An unexpected error occured. Please reload the page."); }
+                );
         });
     }
     
