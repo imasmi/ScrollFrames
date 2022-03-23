@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scrollframes crossing</title>
+<script type="text/javascript" src="../ScrollFrames.js"></script>
+<style>
+    #container {height: 3000px;}
+    #cross{width: 200px; height: 200px; position: fixed; left: 0; top: 400px; background-color: red;}
+</style>
+</head>
+<body>
+
+<div id="container">
+    <div id="cross"></div>
+</div>
+
+<script>
+    new ScrollFrames("#cross", {
+        1000: "transform: translate(0px, 0px); opacity: 0;",
+        1400: "transform: translate(50px, 100px); opacity: 0.5;",
+        2000: "transform: translate(100px, 200px); opacity: 0.5;",
+        2500: "transform: translate(200px, 400px); opacity: 1;"
+    });
+</script>
+</body>
+</html>
