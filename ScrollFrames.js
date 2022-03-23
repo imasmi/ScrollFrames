@@ -50,10 +50,10 @@ class ScrollFrames {
     updateIndex () {
         let bottom = this.scrollPosition();
         for (let i = 0; i <= this.totalFrames; i++) {
-            if (bottom < this.framesKeys[0]) {
+            if (bottom <= this.framesKeys[0]) {
                 this.index = 0;
                 break;
-            } else if (bottom > this.framesKeys[i-1] && bottom < this.framesKeys[i]){
+            } else if (bottom > this.framesKeys[i-1] && bottom <= this.framesKeys[i]){
                 this.index = i;
                 break;
             } else {
