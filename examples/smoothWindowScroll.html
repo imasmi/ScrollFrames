@@ -1,1 +1,36 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scrollframes crossing</title>
+<script type="text/javascript" src="../ScrollFrames.js"></script>
+<style>
+    ul {list-style-type: none; margin: 0;}
+    #container {height: 3000px;}
+</style>
+</head>
+<body>
+
+<div id="container">
+    Simple usage:
+    <div class="scroll-code">
+        new ScrollFrames(window);
+    </div>
+
+    Usage with options:
+    <div class="scroll-code">
+          new ScrollFrames("#cross", {
+              <ul>
+                  <li>duration: 3000, //default is 1200</li>
+                  <li>ease: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), //this is the default function, but could be changed to custom one</li>
+                  <li>multiply: 3, //mouse wheel multiplier, default is 1</li>
+              </ul>
+          });
+      </div>
+</div>
+
+<script>
+    new ScrollFrames(window);
+</script>
+</body>
+</html>
