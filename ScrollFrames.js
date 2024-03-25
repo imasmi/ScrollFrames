@@ -1,24 +1,43 @@
 class ScrollFrames {
-    constructor (item, frames) {
+    constructor (item, frames = {}) {
         this.item = typeof item == "string" ? document.querySelector(item) : item;
-        if (!this.item.classList.contains("ScrollFrames")) {this.item.classList.add("ScrollFrames")}
-        this.index = 0;
-        this.frames = this.framesToObject(frames);
-        this.framesKeys = Object.keys(this.frames);
-        this.totalFrames = this.framesKeys.length - 1;
+        if (item === window) {
+            this.frames = frames;
+            if(!this.frames.duration){ this.frames.duration = 1200;}
+            if(!this.frames.ease){ this.frames.ease = t => Math.min(1, 1.001 - Math.pow(2, -10 * t));}
+            if(!this.frames.multiply){ this.frames.multiply = 1;}
+            this.scrollOffset = 0;
+            this.scrollTimeout;
 
-        this.setFramePosition();
-        window.addEventListener("scroll", () => this.setFramePosition());
-        window.addEventListener("resize", () => {
-                new Promise((myResolve, myReject) => {
-                    document.querySelectorAll(".ScrollFrames").forEach(el => el.removeAttribute("style"));
-                    myResolve();
-                    myReject();
-                }).then(
-                (value) => { this.setFramePosition(); },
-                (error) => { alert("An unexpected error occured. Please reload the page."); }
-                );
-        });
+            window.addEventListener("wheel", e => {
+                e.preventDefault();
+                let scrollLeft = e.deltaY > 0 ? document.body.scrollHeight - window.scrollY : -window.scrollY; 
+                this.scrollOffset += e.deltaY * this.frames.multiply;
+                if (Math.abs(scrollLeft) < Math.abs(this.scrollOffset)) {this.scrollOffset = scrollLeft;}
+                clearTimeout(this.scrollTimeout);
+                this.scrollTimeout = setTimeout(() => this.scrollOffset = 0, 100);
+                this.scrollToBottom(this.scrollOffset);
+            }, { passive:false });
+        } else {
+            if (!this.item.classList.contains("ScrollFrames")) {this.item.classList.add("ScrollFrames")}
+            this.index = 0;
+            this.frames = this.framesToObject(frames);
+            this.framesKeys = Object.keys(this.frames);
+            this.totalFrames = this.framesKeys.length - 1;
+    
+            this.setFramePosition();
+            window.addEventListener("scroll", () => this.setFramePosition());
+            window.addEventListener("resize", () => {
+                    new Promise((myResolve, myReject) => {
+                        document.querySelectorAll(".ScrollFrames").forEach(el => el.removeAttribute("style"));
+                        myResolve();
+                        myReject();
+                    }).then(
+                    (value) => { this.setFramePosition(); },
+                    (error) => { alert("An unexpected error occured. Please reload the page."); }
+                    );
+            });
+        }
     }
     
     framesToObject (frames) {
@@ -101,5 +120,47 @@ class ScrollFrames {
                 }
             }
         }
+    }
+
+    scrollToBottom(scrollOffset) {
+        // Get the current scroll position
+        const startScroll = window.scrollY;
+    
+        // Define the target scroll position (bottom of the page)
+        const targetScroll = startScroll + scrollOffset;
+        
+        // Set the duration of the scroll animation in milliseconds
+        const duration = this.frames.duration; // 1 second
+    
+        // Define the easing function (ease-out)
+        const easeOutQuad = this.frames.ease;
+        // Create a timestamp for the start of the animation
+        const startTime = performance.now();
+    
+        // Define the scroll animation function
+        function animateScroll() {
+          // Calculate the elapsed time since the start of the animation
+          const elapsedTime = performance.now() - startTime;
+    
+          // Calculate the progress of the animation (between 0 and 1)
+          const progress = Math.min(elapsedTime / duration, 1);
+    
+          // Apply the ease-out function to the progress
+          const easedProgress = easeOutQuad(progress);
+    
+          // Calculate the new scroll position based on the eased progress
+          const newScroll = startScroll + (targetScroll - startScroll) * easedProgress;
+
+          // Set the new scroll position
+          window.scrollTo(0, newScroll);
+    
+          // Continue the animation if it's not finished
+          if (progress < 1) {
+            window.requestAnimationFrame(animateScroll);
+          }
+        }
+
+        // Start the scroll animation
+        window.requestAnimationFrame(animateScroll);
     }
 }
