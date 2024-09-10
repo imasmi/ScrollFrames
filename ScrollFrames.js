@@ -10,13 +10,20 @@ class ScrollFrames {
             this.scrollTimeout;
 
             window.addEventListener("wheel", e => {
-                e.preventDefault();
-                let scrollLeft = e.deltaY > 0 ? document.body.scrollHeight - window.scrollY : -window.scrollY; 
-                this.scrollOffset += e.deltaY * this.frames.multiply;
-                if (Math.abs(scrollLeft) < Math.abs(this.scrollOffset)) {this.scrollOffset = scrollLeft;}
-                clearTimeout(this.scrollTimeout);
-                this.scrollTimeout = setTimeout(() => this.scrollOffset = 0, 100);
-                this.scrollToBottom(this.scrollOffset);
+                    if (e.deltaMode === 1 || (e.deltaMode === 0 && Math.abs(e.deltaY) >= 100)) {
+                    let delta = e.deltaY;
+                    if (Math.abs(e.deltaY) < 20) { // Only for Mozilla Firefox
+                        delta = e.deltaY > 0 ? (e.deltaY * 20) + 100 : (e.deltaY * 20) - 100; 
+                    }
+                    this.scrollOffset += delta * this.frames.multiply;
+                    e.preventDefault();
+                    let scrollLeft = e.deltaY > 0 ? document.body.scrollHeight - window.scrollY : -window.scrollY; 
+                    if (Math.abs(scrollLeft) < Math.abs(this.scrollOffset)) {this.scrollOffset = scrollLeft;}
+                    clearTimeout(this.scrollTimeout);
+                    this.scrollTimeout = setTimeout(() => this.scrollOffset = 0, 300);
+                    //console.log(this.scrollOffset);
+                    this.scrollToBottom(this.scrollOffset); 
+                    }
             }, { passive:false });
         } else {
             if (!this.item.classList.contains("ScrollFrames")) {this.item.classList.add("ScrollFrames")}
